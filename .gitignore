@@ -1,0 +1,12 @@
+# Generated files and local previews
+/tmp/
+/site-upload.zip
+*.log
+__pycache__/
+
+# Local environment and credentials
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
