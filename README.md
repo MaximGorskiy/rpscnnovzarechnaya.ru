@@ -14,11 +14,11 @@
 
 Локальный Git-репозиторий содержит исходники и публичные файлы сайта. Временные скриншоты и ZIP-архив исключены через `.gitignore`. `.nojekyll` отключает обработку сайта Jekyll.
 
-1. В аккаунте GitHub создать **пустой публичный** репозиторий `rpscnnovzarechnaya`. При создании не добавлять README, .gitignore или лицензию: локальный репозиторий уже содержит первый коммит.
-2. Подключить URL созданного репозитория: `git remote add origin https://github.com/ВАШ-ЛОГИН/rpscnnovzarechnaya.git`.
-3. Выполнить `git push -u origin main`. Если GitHub запросит вход, использовать вход через браузер или менеджер учётных данных; пароль аккаунта не вставлять в команду.
-4. В репозитории GitHub: Settings → Pages → Source: Deploy from a branch → Branch: main → Folder: /(root) → Save.
-5. Проверить временный адрес https://ВАШ-ЛОГИН.github.io/rpscnnovzarechnaya/. Затем добавить `rpscnnovzarechnaya.ru` в Custom domain и настроить DNS по актуальной документации GitHub. Добавленный GitHub файл CNAME получить локально командой `git pull --ff-only` перед следующими изменениями.
+Копия сайта создана 14 октября 2026 года из репозитория `MaximGorskiy/rpsc-nnov`. Содержимое сохранено; файл CNAME и адрес для кнопки «Поделиться» при локальном просмотре используют новый домен.
+
+Репозиторий: https://github.com/MaximGorskiy/rpscnnovzarechnaya.ru. Основной адрес: https://rpscnnovzarechnaya.ru/.
+
+GitHub Pages публикует ветку `main`, папку `/(root)`. Custom domain: `rpscnnovzarechnaya.ru`. DNS обслуживает Cloudflare: четыре A-записи GitHub Pages для корня и CNAME `www` → `maximgorskiy.github.io`.
 
 Обычное обновление: получить изменения `git pull --ff-only`, отредактировать сайт локально, проверить `git diff`, выполнить `git add` для изменённых файлов, `git commit -m "Описание изменения"`, затем `git push`. `git fetch origin` только получает сведения об удалённых изменениях; он не отправляет локальные коммиты и не меняет рабочие файлы.
 
