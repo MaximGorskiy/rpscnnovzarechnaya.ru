@@ -1,6 +1,7 @@
 # Generated files and local previews
 /tmp/
 /site-upload.zip
+/output/
 *.log
 __pycache__/
 

@@ -1,6 +1,7 @@
 (() => {
   'use strict';
   const data = window.COMMUNITY_CONTENT || {};
+  const asset = value => (window.COMMUNITY_ASSETS || {})[value] || value;
   const make = (tag, text, className) => { const el = document.createElement(tag); if (text) el.textContent = text; if (className) el.className = className; return el; };
   const dateLabel = value => /^\d{4}-\d{2}-\d{2}$/.test(value || '') ? new Date(`${value}T12:00:00`).toLocaleDateString('ru-RU', {day:'numeric', month:'long', year:'numeric'}) : value || '';
   const menu = document.querySelector('.menu-toggle');
@@ -14,11 +15,14 @@
   if (!data.reports?.length) { const entry = make('article', '', 'journal-entry'); entry.append(make('p','НУЖНО ДОБАВИТЬ: ДАТА И ОТЧЁТ','field-placeholder'),make('h3','Готовим первую запись с площадки'),make('p','Здесь будет датированный отчёт: что выполнено, что происходит сейчас и какие работы предстоят.')); journal.append(entry); }
   (data.reports || []).slice().sort((a,b) => b.date.localeCompare(a.date)).forEach(report => { const entry=make('article','','journal-entry'); const time=make('time',dateLabel(report.date),'eyebrow'); time.dateTime=report.date; entry.append(time,make('h3',report.title),make('p',report.text)); if(report.completed?.length){const ul=make('ul'); report.completed.forEach(item=>ul.append(make('li',item)));entry.append(ul);}journal.append(entry); });
   const projectEntry=make('article','','journal-entry');projectEntry.append(make('p','2024 · Архитектурный проект','eyebrow'),make('h3','Образ будущего храма'),make('p','Архитектурные визуализации и чертежи помогают представить храм на Берёзовской. Посмотрите проект и основные показатели.')); const projectLink=make('a','Посмотреть проект →','text-link');projectLink.href='#project';projectEntry.append(projectLink);journal.append(projectEntry);
-  if(data.constructionPhotos?.length){const container=document.querySelector('#construction-photos');container.className='gallery construction-gallery';container.replaceChildren();data.constructionPhotos.forEach(photo=>{if(!/^assets\/[a-zA-Z0-9_./-]+\.(webp|jpe?g|png)$/i.test(photo.src)||photo.src.includes('..'))return;const figure=make('figure');const a=make('a','','gallery-item');a.href=photo.src;a.dataset.gallery='';const img=make('img');img.src=photo.src;img.alt=photo.caption;img.loading='lazy';a.append(img,make('span',`${dateLabel(photo.date)} · ${photo.caption}`));figure.append(a);container.append(figure);});}
+  if(data.constructionPhotos?.length){const container=document.querySelector('#construction-photos');container.className='gallery construction-gallery';container.replaceChildren();data.constructionPhotos.forEach(photo=>{if(!/^assets\/[a-zA-Z0-9_./-]+\.(webp|jpe?g|png)$/i.test(photo.src)||photo.src.includes('..'))return;const figure=make('figure');const a=make('a','','gallery-item');a.href=asset(photo.src);a.dataset.gallery='';const img=make('img');img.src=asset(photo.src);img.alt=photo.caption;img.loading='lazy';a.append(img,make('span',`${dateLabel(photo.date)} · ${photo.caption}`));figure.append(a);container.append(figure);});}
   if(data.scheduleText)document.querySelector('#schedule-text').textContent=data.scheduleText;
-  if(data.donationText)document.querySelector('#donation-details').textContent=data.donationText;
+  const donation=document.querySelector('#donation-details');
+  const hasDonation=Array.isArray(data.donationDetails)&&data.donationDetails.length>0;
+  if(hasDonation){donation.replaceChildren(make('h3','Реквизиты для пожертвований'));const dl=make('dl','','bank-details');data.donationDetails.forEach(([label,value])=>dl.append(make('dt',label),make('dd',value)));donation.append(dl);if(data.donationText)donation.append(make('p',data.donationText));}
+  else if(data.donationText)donation.textContent=data.donationText;
   if(!data.scheduleText)document.querySelector('#schedule-text').prepend(make('span','НУЖНО ЗАПОЛНИТЬ: МЕСТО И РАСПИСАНИЕ','field-placeholder'));
-  if(!data.donationText)document.querySelector('#donation-details').prepend(make('span','НУЖНО ЗАПОЛНИТЬ: РЕКВИЗИТЫ И ПОЛУЧАТЕЛЬ','field-placeholder'));
+  if(!hasDonation&&!data.donationText)donation.prepend(make('span','НУЖНО ЗАПОЛНИТЬ: РЕКВИЗИТЫ И ПОЛУЧАТЕЛЬ','field-placeholder'));
   if(!data.constructionPhotos?.length)document.querySelector('#construction-photos div').prepend(make('span','НУЖНО ДОБАВИТЬ: ФОТОГРАФИИ СТРОИТЕЛЬСТВА','field-placeholder'));
   const contacts=document.querySelector('#contact-details');
   if(!data.phone&&!data.email)contacts.prepend(make('span','НУЖНО ЗАПОЛНИТЬ: ТЕЛЕФОН, EMAIL И КОНТАКТНОЕ ЛИЦО','field-placeholder'));
