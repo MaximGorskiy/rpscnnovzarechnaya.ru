@@ -11,7 +11,7 @@ window.COMMUNITY_CONTENT = {
   nextStage: "",
   reports: [],
   constructionPhotos: [
-    {src: "assets/building/community-at-church.jpg", date: "", caption: "Община у строящегося храма на Берёзовской"}
+    {src: "assets/building/community-at-church.jpg", date: "", caption: "Воздвижение креста над алтарём строящегося храма. Веха в жизни общины и каждого из нас."}
   ],
   phone: "+7 (986) 747-14-25",
   email: "zarekoirpsc@mail.ru",
