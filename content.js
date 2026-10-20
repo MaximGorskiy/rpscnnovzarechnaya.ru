@@ -10,7 +10,9 @@ window.COMMUNITY_CONTENT = {
   currentStage: "",
   nextStage: "",
   reports: [],
-  constructionPhotos: [],
+  constructionPhotos: [
+    {src: "assets/building/community-at-church.jpg", date: "", caption: "Община у строящегося храма на Берёзовской"}
+  ],
   phone: "+7 (986) 747-14-25",
   email: "zarekoirpsc@mail.ru",
   contactPerson: "Председатель общины — Енышев Александр Владимирович",
