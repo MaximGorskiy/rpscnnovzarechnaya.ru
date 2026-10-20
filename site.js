@@ -74,7 +74,7 @@
   if(data.scheduleText)document.querySelector('#schedule-text').textContent=data.scheduleText;
   const donation=document.querySelector('#donation-details');
   const hasDonation=Array.isArray(data.donationDetails)&&data.donationDetails.length>0;
-  if(hasDonation){donation.replaceChildren(make('h3','Реквизиты для пожертвований'));const dl=make('dl','','bank-details');data.donationDetails.forEach(([label,value])=>dl.append(make('dt',label),make('dd',value)));donation.append(dl);if(data.donationText)donation.append(make('p',data.donationText));}
+  if(hasDonation){const details=make('details','','donation-disclosure');details.append(make('summary','Реквизиты для пожертвований'));const dl=make('dl','','bank-details');data.donationDetails.forEach(([label,value])=>dl.append(make('dt',label),make('dd',value)));details.append(dl);if(data.donationText)details.append(make('p',data.donationText));donation.replaceChildren(details);}
   else if(data.donationText)donation.textContent=data.donationText;
   if(!data.scheduleText)document.querySelector('#schedule-text').prepend(make('span','НУЖНО ЗАПОЛНИТЬ: МЕСТО И РАСПИСАНИЕ','field-placeholder'));
   if(!hasDonation&&!data.donationText)donation.prepend(make('span','НУЖНО ЗАПОЛНИТЬ: РЕКВИЗИТЫ И ПОЛУЧАТЕЛЬ','field-placeholder'));
