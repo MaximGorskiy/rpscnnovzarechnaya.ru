@@ -11,7 +11,10 @@ window.COMMUNITY_CONTENT = {
   nextStage: "",
   reports: [],
   constructionPhotos: [
-    {src: "assets/building/community-at-church.jpg", date: "", caption: "Воздвижение креста над алтарём строящегося храма. Веха в жизни общины и каждого из нас."}
+    {src: "assets/building/community-at-church.jpg", date: "", caption: "Воздвижение креста над алтарём строящегося храма. Веха в жизни общины и каждого из нас."},
+    {src: "assets/building/prayer-within-walls.webp", date: "", caption: "Стены ещё строятся, а молитва уже живёт"},
+    {src: "assets/building/hands-building-dome.webp", date: "", caption: "Трудом рук — к небесам"},
+    {src: "assets/building/community-together.webp", date: "", caption: "Храм растёт, и мы становимся ближе"}
   ],
   phone: "+7 (986) 747-14-25",
   email: "zarekoirpsc@mail.ru",
