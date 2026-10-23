@@ -71,6 +71,54 @@
     if(typeof ResizeObserver==='function')new ResizeObserver(updateArrows).observe(strip);
     else window.addEventListener('resize',updateArrows);
   }
+  const videos=(data.constructionVideos||[]).filter(video=>/^[a-zA-Z0-9_-]{11}$/.test(video.youtubeId)&&/^assets\/[a-zA-Z0-9_./-]+\.(webp|jpe?g|png)$/i.test(video.cover)&&!video.cover.includes('..'));
+  if(videos.length){
+    const container=document.querySelector('#construction-videos');container.hidden=false;container.className='construction-gallery video-gallery';
+    container.append(make('h3','Видеолетопись строительства'));
+    const controls=make('div','','photo-strip-controls');
+    const previous=make('button','←','photo-strip-arrow'),next=make('button','→','photo-strip-arrow');
+    previous.type=next.type='button';previous.setAttribute('aria-label','Прокрутить видео влево');next.setAttribute('aria-label','Прокрутить видео вправо');
+    const counter=make('span','','photo-counter');counter.setAttribute('aria-live','polite');controls.append(previous,counter,next);
+    const strip=make('div','','photo-strip');strip.id='construction-video-thumbnails';strip.setAttribute('role','group');strip.setAttribute('aria-label','Видеоролики строительства');
+    [previous,next].forEach(button=>button.setAttribute('aria-controls',strip.id));
+    const figure=make('figure','','construction-selected');
+    const player=make('div','','video-player');
+    const caption=make('figcaption','','video-caption');caption.setAttribute('aria-live','polite');
+    const title=make('strong'),description=make('p'),watch=make('a','Открыть на YouTube ↗','text-link');watch.target='_blank';watch.rel='noopener noreferrer';
+    caption.append(title,description,watch);figure.append(player,caption);
+    let selected=0;
+    const buttons=videos.map((video,index)=>{
+      const button=make('button','','photo-thumbnail video-thumbnail');button.type='button';button.setAttribute('aria-label',`Видео ${index+1}: ${video.title}`);
+      const image=make('img');image.src=asset(video.cover);image.alt='';image.loading='lazy';
+      const play=make('span','▶','video-thumb-play');play.setAttribute('aria-hidden','true');button.append(image,play);
+      button.addEventListener('click',()=>select(index));strip.append(button);return button;
+    });
+    function select(index){
+      selected=index;const video=videos[index];const url='https://www.youtube.com/watch?v='+video.youtubeId;
+      const button=make('button','','video-poster');button.type='button';button.setAttribute('aria-label','Смотреть видео: '+video.title);
+      const image=make('img');image.src=asset(video.cover);image.alt=video.title;
+      button.append(image,make('span','▶ Смотреть видео','video-play-label'));player.replaceChildren(button);
+      title.textContent=[dateLabel(video.date),video.title].filter(Boolean).join(' · ');description.textContent=video.description||'';watch.href=url;
+      counter.textContent=`${index+1} / ${videos.length}`;buttons.forEach((item,i)=>item.setAttribute('aria-pressed',String(i===index)));
+      button.addEventListener('click',()=>{
+        if(location.protocol==='file:'){window.open(url,'_blank','noopener,noreferrer');return;}
+        const iframe=make('iframe');iframe.src='https://www.youtube-nocookie.com/embed/'+video.youtubeId+'?autoplay=1&rel=0';
+        iframe.title=video.title;iframe.allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen';iframe.allowFullscreen=true;
+        iframe.referrerPolicy='strict-origin-when-cross-origin';player.replaceChildren(iframe);
+      });
+      if(strip.isConnected)buttons[index].scrollIntoView({block:'nearest',inline:'nearest',behavior:'auto'});
+    }
+    function updateArrows(){previous.disabled=strip.scrollLeft<=5;next.disabled=strip.scrollLeft+strip.clientWidth>=strip.scrollWidth-5;}
+    const scroll=direction=>strip.scrollBy({left:direction*Math.max(150,strip.clientWidth*.75),behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+    previous.addEventListener('click',()=>scroll(-1));next.addEventListener('click',()=>scroll(1));strip.addEventListener('scroll',updateArrows,{passive:true});
+    strip.addEventListener('keydown',event=>{
+      if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();
+      const index=event.key==='Home'?0:event.key==='End'?videos.length-1:Math.max(0,Math.min(videos.length-1,selected+(event.key==='ArrowRight'?1:-1)));
+      select(index);buttons[index].focus({preventScroll:true});
+    });
+    select(0);container.append(controls,strip,figure,make('p','Для просмотра видео требуется интернет. В копии, открытой с диска, ролик откроется на YouTube.','small'));
+    updateArrows();if(typeof ResizeObserver==='function')new ResizeObserver(updateArrows).observe(strip);else window.addEventListener('resize',updateArrows);
+  }
   if(data.scheduleText)document.querySelector('#schedule-text').textContent=data.scheduleText;
   const donation=document.querySelector('#donation-details');
   const hasDonation=Array.isArray(data.donationDetails)&&data.donationDetails.length>0;

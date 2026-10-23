@@ -16,6 +16,9 @@ window.COMMUNITY_CONTENT = {
     {src: "assets/building/hands-building-dome.webp", date: "", caption: "Трудом рук — к небесам"},
     {src: "assets/building/community-together.webp", date: "", caption: "Храм растёт, и мы становимся ближе"}
   ],
+  constructionVideos: [
+    {youtubeId: "-F3RpG5YSC8", cover: "assets/building/community-at-church.jpg", date: "", title: "Приглашаем стать частью строительства храма!", description: "Видео о строительстве храма Заречной общины в Нижнем Новгороде."}
+  ],
   phone: "+7 (986) 747-14-25",
   email: "zarekoirpsc@mail.ru",
   contactPerson: "Председатель общины — Енышев Александр Владимирович",
