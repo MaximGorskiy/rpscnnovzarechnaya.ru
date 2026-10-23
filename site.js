@@ -116,7 +116,7 @@
       const index=event.key==='Home'?0:event.key==='End'?videos.length-1:Math.max(0,Math.min(videos.length-1,selected+(event.key==='ArrowRight'?1:-1)));
       select(index);buttons[index].focus({preventScroll:true});
     });
-    select(0);container.append(controls,strip,figure,make('p','Для просмотра видео требуется интернет. В копии, открытой с диска, ролик откроется на YouTube.','small'));
+    select(0);container.append(controls,strip,figure);
     updateArrows();if(typeof ResizeObserver==='function')new ResizeObserver(updateArrows).observe(strip);else window.addEventListener('resize',updateArrows);
   }
   if(data.scheduleText)document.querySelector('#schedule-text').textContent=data.scheduleText;
