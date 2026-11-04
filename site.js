@@ -12,9 +12,8 @@
   [['Текущий этап',data.currentStage], ['Следующие работы',data.nextStage], ['Сведения обновлены',dateLabel(data.updatedAt)]].forEach(([label,value]) => {facts.append(make('dt',label),make('dd',value || 'НУЖНО ЗАПОЛНИТЬ',value ? '' : 'field-placeholder'));});
   const journal = document.querySelector('#journal');
   journal.replaceChildren();
-  if (!data.reports?.length) { const entry = make('article', '', 'journal-entry'); entry.append(make('p','НУЖНО ДОБАВИТЬ: ДАТА И ОТЧЁТ','field-placeholder'),make('h3','Готовим первую запись с площадки'),make('p','Здесь будет датированный отчёт: что выполнено, что происходит сейчас и какие работы предстоят.')); journal.append(entry); }
   (data.reports || []).slice().sort((a,b) => b.date.localeCompare(a.date)).forEach(report => { const entry=make('article','','journal-entry'); const time=make('time',dateLabel(report.date),'eyebrow'); time.dateTime=report.date; entry.append(time,make('h3',report.title),make('p',report.text)); if(report.completed?.length){const ul=make('ul'); report.completed.forEach(item=>ul.append(make('li',item)));entry.append(ul);}journal.append(entry); });
-  const projectEntry=make('article','','journal-entry');projectEntry.append(make('p','2024 · Архитектурный проект','eyebrow'),make('h3','Образ будущего храма'),make('p','Архитектурные визуализации и чертежи помогают представить храм на Берёзовской. Посмотрите проект и основные показатели.')); const projectLink=make('a','Посмотреть проект →','text-link');projectLink.href='#project';projectEntry.append(projectLink);journal.append(projectEntry);
+  if(!journal.children.length){journal.hidden=true;document.querySelector('.construction-layout').classList.add('journal-empty');const diaryLink=document.querySelector('.status-card a[href="#journal"]');if(diaryLink)diaryLink.hidden=true;}
   const photos=(data.constructionPhotos||[]).filter(photo=>/^assets\/[a-zA-Z0-9_./-]+\.(webp|jpe?g|png)$/i.test(photo.src)&&!photo.src.includes('..'));
   if(photos.length){
     const container=document.querySelector('#construction-photos');
