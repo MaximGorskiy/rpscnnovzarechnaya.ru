@@ -1,6 +1,7 @@
 /* Меняем данные локально. Публикуем только подтверждённые сведения.
    Для отчёта: {date: "2026-10-03", title: "...", text: "...", completed: ["..."]}
    Для фото: {src: "assets/building/photo.webp", date: "2026-10-03", caption: "..."}
+   Карусель «Текущий этап»: currentStagePhotos — тот же формат фото, что и для constructionPhotos.
    Контакты: phone, email. Пустые значения скрываются.
    Реквизиты: donationDetails — пары «поле, значение» из карточки общины.
    donationText — дополнительный подтверждённый текст, без HTML. */
@@ -15,6 +16,12 @@ window.COMMUNITY_CONTENT = {
     {src: "assets/building/prayer-within-walls.webp", date: "", caption: "Стены ещё строятся, а молитва уже живёт"},
     {src: "assets/building/hands-building-dome.webp", date: "", caption: "Трудом рук — к небесам"},
     {src: "assets/building/community-together.webp", date: "", caption: "Храм растёт, и мы становимся ближе"}
+  ],
+  currentStagePhotos: [
+    {src: "assets/building/tent-near-church.webp", date: "", caption: "Шатёр с кокошниками на площадке у строящегося храма"},
+    {src: "assets/building/tent-closeup.webp", date: "", caption: "Шатёр с кокошниками крупным планом"},
+    {src: "assets/building/tent-in-yard.webp", date: "", caption: "Шатёр с кокошниками на площадке"},
+    {src: "assets/building/tent-and-church.webp", date: "", caption: "Шатёр у колокольни строящегося храма"}
   ],
   constructionVideos: [
     {youtubeId: "-F3RpG5YSC8", cover: "assets/building/community-at-church.jpg", date: "", title: "Приглашаем стать частью строительства храма!", description: "Видео о строительстве храма Заречной общины в Нижнем Новгороде."}

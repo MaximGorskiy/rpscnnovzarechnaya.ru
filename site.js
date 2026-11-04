@@ -8,8 +8,46 @@
   menu.addEventListener('click', () => { const open = menu.getAttribute('aria-expanded') !== 'true'; menu.setAttribute('aria-expanded', String(open)); document.querySelector('#navigation').classList.toggle('open', open); });
   document.querySelectorAll('#navigation a').forEach(a => a.addEventListener('click', () => {menu.setAttribute('aria-expanded','false'); document.querySelector('#navigation').classList.remove('open');}));
   if (data.constructionSummary) document.querySelector('#construction-summary').textContent = data.constructionSummary;
+  const stagePhotos=(data.currentStagePhotos||[]).filter(photo=>/^assets\/[a-zA-Z0-9_./-]+\.(webp|jpe?g|png)$/i.test(photo.src)&&!photo.src.includes('..'));
+  // Карусель «Текущий этап»: стрелки листают фото по кругу, клик по снимку открывает лайтбокс.
+  const stageCarousel=photos=>{
+    const figure=make('figure','','stage-carousel');
+    const controls=make('div','','photo-strip-controls');
+    const previous=make('button','←','photo-strip-arrow');
+    const next=make('button','→','photo-strip-arrow');
+    previous.type=next.type='button';
+    previous.setAttribute('aria-label','Предыдущая фотография текущего этапа');
+    next.setAttribute('aria-label','Следующая фотография текущего этапа');
+    const counter=make('span','','photo-counter');counter.setAttribute('aria-live','polite');
+    controls.append(previous,counter,next);
+    const link=make('a','','stage-carousel-link');link.dataset.gallery='';
+    const image=make('img');image.decoding='async';image.loading='lazy';
+    link.append(image);
+    const caption=make('figcaption');caption.id='stage-photo-caption';caption.setAttribute('aria-live','polite');
+    link.setAttribute('aria-describedby',caption.id);
+    let selected=0;
+    const select=index=>{
+      selected=(index+photos.length)%photos.length;
+      const photo=photos[selected];
+      link.href=asset(photo.src);
+      link.dataset.caption=[dateLabel(photo.date),photo.caption].filter(Boolean).join(' · ')||'Текущий этап строительства';
+      image.src=asset(photo.src);image.alt=photo.caption||'Текущий этап строительства';
+      caption.textContent=link.dataset.caption;
+      counter.textContent=`${selected+1} / ${photos.length}`;
+    };
+    previous.addEventListener('click',()=>select(selected-1));
+    next.addEventListener('click',()=>select(selected+1));
+    figure.append(controls,link,caption);
+    select(0);
+    return figure;
+  };
   const facts = document.querySelector('#construction-facts');
-  [['Текущий этап',data.currentStage], ['Следующие работы',data.nextStage], ['Сведения обновлены',dateLabel(data.updatedAt)]].forEach(([label,value]) => {facts.append(make('dt',label),make('dd',value || 'НУЖНО ЗАПОЛНИТЬ',value ? '' : 'field-placeholder'));});
+  [['Текущий этап',data.currentStage], ['Следующие работы',data.nextStage], ['Сведения обновлены',dateLabel(data.updatedAt)]].forEach(([label,value]) => {
+    const dd=make('dd');
+    if(label==='Текущий этап'&&stagePhotos.length){ if(value)dd.append(document.createTextNode(value)); dd.append(stageCarousel(stagePhotos)); }
+    else{ dd.textContent=value||'НУЖНО ЗАПОЛНИТЬ'; if(!value)dd.className='field-placeholder'; }
+    facts.append(make('dt',label),dd);
+  });
   const journal = document.querySelector('#journal');
   journal.replaceChildren();
   (data.reports || []).slice().sort((a,b) => b.date.localeCompare(a.date)).forEach(report => { const entry=make('article','','journal-entry'); const time=make('time',dateLabel(report.date),'eyebrow'); time.dateTime=report.date; entry.append(time,make('h3',report.title),make('p',report.text)); if(report.completed?.length){const ul=make('ul'); report.completed.forEach(item=>ul.append(make('li',item)));entry.append(ul);}journal.append(entry); });

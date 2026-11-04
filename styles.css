@@ -25,5 +25,5 @@
 
 .video-gallery{padding-top:32px;border-top:1px solid var(--line)}.video-thumbnail{position:relative}.video-thumb-play{position:absolute;inset:0;display:grid;place-items:center;color:white;font-size:24px;text-shadow:0 1px 5px #000;background:#0002;pointer-events:none}.video-player{aspect-ratio:16/9;background:#152119;overflow:hidden;border-radius:12px}.video-player>iframe,.video-poster{display:block;width:100%;height:100%;border:0}.video-poster{padding:0;position:relative;background:#152119;color:white}.video-poster>img{width:100%;height:100%;object-fit:contain;opacity:.85}.video-play-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);padding:12px 20px;background:var(--green);border:1px solid #fff8;white-space:nowrap;font-size:15px}.video-poster:hover .video-play-label{background:var(--wine)}.video-caption strong{display:block;font:24px/1.35 Georgia,serif}.video-caption p{margin:10px 0;font-size:14px;color:var(--muted)}
 
-/* Пустой дневник: карточка статуса занимает всю ширину. */
-.construction-layout.journal-empty{grid-template-columns:1fr}
+/* Карусель «Текущий этап» в карточке статуса. */
+.construction-layout.journal-empty{grid-template-columns:1fr}.stage-carousel{max-width:560px;margin-top:14px}.stage-carousel-link{display:block;background:white}.stage-carousel-link>img{width:100%;aspect-ratio:1/1;object-fit:cover}.stage-carousel figcaption{padding-top:10px;font-size:13px;line-height:1.6;color:var(--muted);overflow-wrap:anywhere}
